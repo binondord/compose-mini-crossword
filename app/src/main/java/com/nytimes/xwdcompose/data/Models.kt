@@ -1,6 +1,5 @@
 package com.nytimes.xwdcompose.data
 
-import java.util.*
 import kotlin.math.sqrt
 
 enum class SquareType {
@@ -11,7 +10,8 @@ enum class SquareType {
 enum class SelectionMode {
     NONE, // plain old white square
     CURSOR, // the cursor is on this square
-    ACTIVE_CLUE // this is the clue we're solving, but cursor's not here
+    ACTIVE_CLUE, // this is the clue we're solving, but cursor's not here
+    CORRECT
 }
 
 enum class Direction {

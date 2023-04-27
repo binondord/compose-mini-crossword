@@ -35,7 +35,7 @@ class BoardViewModel : ViewModel() {
 
     fun enterLetter(letter: String) {
         squares = squares.toMutableList().also {
-            it[selectedCellIndex].userAnswer = letter.toUpperCase(Locale.US)
+            it[selectedCellIndex].userAnswer = letter.uppercase(Locale.US)
             it[selectedCellIndex].checked = false
         }
 
@@ -71,8 +71,9 @@ class BoardViewModel : ViewModel() {
     }
 
     fun selectSquare(square: Square) {
-        val newIndex = squares.indexOf(square)
 
+        val newIndex = squares.indexOf(square)
+        Log.i("selectSquare", "newIndex: ${newIndex}")
         if (selectedCellIndex == newIndex) {
             selectedDirection = when (selectedDirection) {
                 Direction.ACROSS -> Direction.DOWN
