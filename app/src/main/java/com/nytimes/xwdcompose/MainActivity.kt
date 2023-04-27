@@ -7,18 +7,14 @@ import android.util.Log
 import android.view.KeyEvent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Box
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
-import androidx.compose.runtime.state
-import androidx.compose.ui.platform.setContent
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Text
 import com.nytimes.xwdcompose.data.BoardData
 import com.nytimes.xwdcompose.ui.GameBoard
 import com.nytimes.xwdcompose.ui.XWDComposeTheme
@@ -27,10 +23,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.ViewModel
 import com.nytimes.xwdcompose.data.Square
 import com.nytimes.xwdcompose.ui.ClueBar
@@ -48,19 +44,23 @@ class MainActivity : AppCompatActivity() {
             XWDComposeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Column {
+                    Column (modifier = Modifier.fillMaxHeight()) {
+                        Box (modifier = Modifier.fillMaxWidth()) {
+                            Text("Score: 100")
+                        }
                         viewModel.boardState?.let {boardState ->
                             GameBoard(boardState.squares,
                                 viewModel::selectSquare)
                             ClueBar(clue = boardState.selectedClue)
                         }
+                        Button(onClick = {viewModel.checkBoard()}){
+                            Text(text ="Check Your Work")
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
                         Box(modifier = Modifier.fillMaxWidth()) {
                             CustomKeyboard {
                                 viewModel.enterLetter(it)
                             }
-                        }
-                        Button(onClick = {viewModel.checkBoard()}){
-                            Text("Check Your Work")
                         }
                     }
                 }
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 @Suppress("DEPRECATION")
 @Composable
 fun CustomKeyboard(onKeyClicked: (String) -> Unit) {
-    val context = ContextAmbient.current
+    val context = LocalContext.current
     val keyboardView = KeyboardView(context, null)
     keyboardView.keyboard = Keyboard(context, R.xml.keyboard)
 
